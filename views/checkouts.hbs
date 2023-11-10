@@ -1,0 +1,112 @@
+<!-- 
+    Filename: checkouts.hbs
+    Author: Akaash Bella, Raahi Vaidya
+    Date: August 10, 2023
+    Language: HTML with Handlebars Templating
+    Description:
+        This template renders the checkout-related content on the web page. It provides an interface
+        for displaying details about book checkouts, including checkout date, due date, and return date.
+        Users can view all the checkout records and their associated details.
+-->
+
+<link rel="stylesheet" href="../css/style.css">
+<h1>Oregon Public Libraries</h1>
+
+{{!-- Navigation Bar --}}
+<nav>
+    <a href="/">Home</a> |
+    <a href="/libraryCards">Library Cards</a> |
+    <a href="/books">Books</a> |
+    <a href="/checkouts">Checkouts</a> |
+    <a href="/fines">Fines</a> |
+    <a href="/cardHasBooks">Library Cards and Books</a>
+</nav>
+
+{{!-- Create a checkouts table --}}
+<table>
+    <thead>
+        <tr>
+            <th>Checkout ID</th>
+            <th>Card ID</th>
+            <th>Book ID</th>
+            <th>Checkout Date</th>
+            <th>Due Date</th>
+            <th>Return Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{!-- For each row, print the attributes --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.checkoutID}}</td>
+            <td>{{this.cardID}}</td>
+            <td>{{this.bookID}}</td>
+            <td>{{this.checkoutDate}}</td>
+            <td>{{this.dueDate}}</td>
+            <td>{{this.returnDate}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{!-- Search checkouts form --}}
+<h2>Search Checkouts</h2>
+<form id="search-checkout-form" method="GET" action="/search-checkouts">
+    
+    <label for="search-checkout-id">Checkout ID: </label>
+    <input type="text" name="search-checkout-id" id="search-checkout-id">
+
+    <label for="search-card-id">Card ID: </label>
+    <input type="text" name="search-card-id" id="search-card-id">
+
+    <label for="search-book-id">Book ID: </label>
+    <input type="text" name="search-book-id" id="search-book-id">
+
+    <input type="submit" value="Search">
+
+    <button type="button" id="redirect-button">Reset</button>
+</form>
+
+{{!-- Redirect script for "Reset" button --}}
+<script>
+    const redirectButton = document.getElementById('redirect-button');
+    redirectButton.addEventListener('click', function() {
+        window.location.href = '/checkouts'; // Redirect to the checkouts page
+    });
+</script>
+
+{{!-- Add checkout form --}}
+<h2>Add a New Checkout</h2>
+<form id="add-checkout-form" method="POST" action="/add-checkout">
+    
+    <label for="input-card-id">Card ID: </label>
+    <input type="text" name="input-card-id" id="input-card-id" required>
+
+    <label for="input-book-id">Book ID: </label>
+    <input type="text" name="input-book-id" id="input-book-id" required>
+
+    <label for="input-checkout-date">Checkout Date: </label>
+    <input type="date" name="input-checkout-date" id="input-checkout-date" required>
+
+    <label for="input-due-date">Due Date: </label>
+    <input type="date" name="input-due-date" id="input-due-date" required>
+
+    <input type="submit" value="Add Checkout">
+</form>
+
+{{!-- Update existing checkout form --}}
+<h2>Update Checkout Return Date</h2>
+<form id="update-checkout-form" method="POST" action="/update-checkout">
+    
+    <label for="checkout-id-dropdown">Select Checkout ID to Update: </label>
+    <select name="checkout-id-update" id="checkout-id-dropdown" required>
+        {{#each data}}
+            <option value="{{this.checkoutID}}">{{this.checkoutID}}</option>
+        {{/each}}
+    </select>
+    
+    <label for="update-return-date">Return Date: </label>
+    <input type="date" name="update-return-date" id="update-return-date" required>
+
+    <input type="submit" value="Update Checkout">
+</form>

@@ -1,0 +1,65 @@
+<!-- 
+    Filename: cardHasBooks.hbs
+    Author: Akaash Bella, Raahi Vaidya
+    Date: August 10, 2023
+    Language: HTML with Handlebars Templating
+    Description:
+        This template renders the associations between library cards and books on the web page.
+        It provides an interface for displaying card and book IDs and supports functionalities
+        like searching for specific card-book associations.
+-->
+
+<link rel="stylesheet" href="../css/style.css">
+<h1>Oregon Public Libraries</h1>
+
+{{!-- Navigation Bar --}}
+<nav>
+    <a href="/">Home</a> |
+    <a href="/libraryCards">Library Cards</a> |
+    <a href="/books">Books</a> |
+    <a href="/checkouts">Checkouts</a> |
+    <a href="/fines">Fines</a> |
+    <a href="/cardHasBooks">Library Cards and Books</a>
+</nav>
+
+{{!-- Create a Card-Book association table --}}
+<table>
+    <thead>
+        <tr>
+            <th>Card ID</th>
+            <th>Book ID</th> 
+        </tr>
+    </thead>
+    <tbody>
+
+        {{!-- For each row, print the attributes --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.cardID}}</td>
+            <td>{{this.bookID}}</td>
+        {{/each}}
+    </tbody>
+</table>
+
+{{!-- Search card-book association form --}}
+<h2>Search Card-Book Associations</h2>
+<form id="search-card-book-form" method="GET" action="/search-card-book">
+    
+    <label for="search-card-id">Card ID: </label>
+    <input type="text" name="search-card-id" id="search-card-id">
+
+    <label for="search-book-id">Book ID: </label>
+    <input type="text" name="search-book-id" id="search-book-id">
+
+    <input type="submit" value="Search">
+
+    <button type="button" id="redirect-button">Reset</button>
+</form>
+
+{{!-- Redirect script for "Reset" button --}}
+<script>
+    const redirectButton = document.getElementById('redirect-button');
+    redirectButton.addEventListener('click', function() {
+        window.location.href = '/cardHasBooks';
+    });
+</script>

@@ -1,0 +1,111 @@
+<!-- 
+    Filename: fines.hbs
+    Author: Akaash Bella, Raahi Vaidya
+    Date: August 10, 2023
+    Language: HTML with Handlebars Templating
+    Description:
+        This template renders the fines-related content on the web page. It provides an interface
+        for displaying details about library fines, including fine amount, due date, and status.
+        Users can view all the fine records and their associated details.
+-->
+
+<link rel="stylesheet" href="../css/style.css">
+<h1>Oregon Public Libraries</h1>
+
+{{!-- Navigation Bar --}}
+<nav>
+    <a href="/">Home</a> |
+    <a href="/libraryCards">Library Cards</a> |
+    <a href="/books">Books</a> |
+    <a href="/checkouts">Checkouts</a> |
+    <a href="/fines">Fines</a> |
+    <a href="/cardHasBooks">Library Cards and Books</a>
+</nav>
+
+{{!-- Create a Fines table --}}
+<table>
+    <thead>
+        <tr>
+            <th>Fine ID</th>
+            <th>Amount</th>
+            <th>Fine Due Date</th>
+            <th>Card ID</th>
+            <th>Fine Status</th>
+        </tr>
+</thead>
+    <tbody>
+        {{!-- For each row, print the attributes --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.fineID}}</td>
+            <td>{{this.amount}}</td>
+            <td>{{this.date}}</td>
+            <td>{{this.cardID}}</td>
+            <td>{{this.fineStatus}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{!-- Search fines form --}}
+<h2>Search Fines</h2>
+<form id="search-fine-form" method="POST" action="/search-fine/">
+    <label for="search-fine-id">Search by Fine ID (Leave blank for Card ID search): </label>
+    <input type="text" name="search-fine-id" id="search-fine-id">
+
+    <label for="search-card-id">Search by Card ID: </label>
+    <input type="text" name="search-card-id" id="search-card-id">
+
+    <input type="submit" value="Search">
+    <button type="button" id="redirect-button">Reset</button>
+</form>
+
+{{!-- Redirect script for "Reset" button --}}
+
+<script>
+    const redirectButton = document.getElementById('redirect-button');
+    redirectButton.addEventListener('click', function() {
+        window.location.href = '/fines';
+    });
+</script>
+
+{{!-- Add new fine form --}}
+<h2>Add a New Fine</h2>
+<form id="add-fine-form" method="POST" action="/add-fine/">
+    <label for="input-amount">Amount: </label>
+    <input type="text" name="input-amount" id="input-amount" step="0.01" min="0" required>
+    
+    <label for="input-date">Date: </label>
+    <input type="date" name="input-date" id="input-date" required>
+
+    <label for="input-card-id">Card ID: </label>
+    <input type="text" name="input-card-id" id="input-card-id" required>
+
+    <label for="input-status">Fine Status: </label>
+    <select name="input-status" id="input-status">
+        <option value="NOT PAID">NOT PAID</option>
+        <option value="PAID">PAID</option>
+    </select>
+
+    <input type="submit" value="Add Fine">
+</form>
+
+{{!-- Update existing fine form --}}
+<h2>Update Fine</h2>
+<form id="update-fine-form" method="POST" action="/update-fine">
+    
+    <label for="fine-id-dropdown">Select Fine ID to Update: </label>
+    <select name="fine-id-update" id="fine-id-dropdown" required>
+        {{#each data}}
+            <option value="{{this.fineID}}">{{this.fineID}}</option>
+        {{/each}}
+    </select>
+
+    <label for="update-fine-status">Update Fine Status: </label>
+    <select name="update-fine-status" id="update-fine-status" required>
+        <option value="NOT PAID">NOT PAID</option>
+        <option value="PAID">PAID</option>
+    </select>
+
+    <input type="submit" value="Update Fine">
+</form>

@@ -1,0 +1,124 @@
+<!-- 
+    Filename: libraryCards.hbs
+    Author: Akaash Bella, Raahi Vaidya
+    Date: August 10, 2023
+    Language: HTML with Handlebars Templating
+    Description:
+        This template renders the library card-related content on the web page. It provides an interface
+        for displaying details about library cards, including name, address, contact information, issue date,
+        and expiration date. Users can view all the library card records and their associated details.
+-->
+
+<link rel="stylesheet" href="../css/style.css">
+<h1>Oregon Public Libraries</h1>
+
+{{!-- Navigation Bar --}}
+<nav>
+    <a href="/">Home</a> |
+    <a href="/libraryCards">Library Cards</a> |
+    <a href="/books">Books</a> |
+    <a href="/checkouts">Checkouts</a> |
+    <a href="/fines">Fines</a> |
+    <a href="/cardHasBooks">Library Cards and Books</a>
+</nav>
+
+{{!-- Create a Library Cards table --}}
+<table id="cards-table">
+    <thead>
+        <tr>
+            <th>Card ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Contact Information</th>
+            <th>Issue Date</th>
+            <th>Expiration Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{!-- For each row, print the attributes --}}
+        {{#each data}}
+        <tr data-value={{this.cardID}}>
+            <td>{{this.cardID}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.address}}</td>
+            <td>{{this.contactInformation}}</td>
+            <td>{{this.issueDate}}</td>
+            <td>{{this.expirationDate}}</td>
+            <td>
+                <form method="POST" action="/delete-LibraryCard/" class="delete-library-card-form">
+                    <input type="hidden" name="card-id" value="{{this.cardID}}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{!-- Search library cards form --}}
+<h2>Search Library Card by Card ID</h2>
+<p>Enter the card ID to search:</p>
+<form id="search-library-card-form" method="POST" action="/search-libraryCard/">
+    <label for="search-card-id">Card ID: </label>
+    <input type="number" name="search-card-id" id="search-card-id" required>
+
+    <input type="submit" value="Search">
+    
+    <button type="button" id="redirect-button">Reset</button>
+</form>
+
+{{!-- Redirect script for "Reset" button --}}
+<script>
+    const redirectButton = document.getElementById('redirect-button');
+    redirectButton.addEventListener('click', function() {
+        window.location.href = '/libraryCards'; // Redirect to the checkouts page
+    });
+</script>
+
+{{!-- Add new library card form --}}
+<h2>Adding a New Library Card</h2>
+<p>To add a new library card, please enter the details below and click `Submit`!</p>
+<form id="add-library-card-form" method="POST" action="/add-library-card-form">
+
+    <label for="input-name">Name: </label>
+    <input type="text" name="input-name" id="input-name" required>
+    
+    <label for="input-address">Address: </label>
+    <input type="text" name="input-address" id="input-address" required>
+
+    <label for="input-contact">Contact Information: </label>
+    <input type="text" name="input-contact" id="input-contact" required>
+    
+    <label for="input-issue-date">Issue Date: </label>
+    <input type="date" name="input-issue-date" id="input-issue-date" required>
+    
+    <label for="input-expiration-date">Expiration Date: </label>
+    <input type="date" name="input-expiration-date" id="input-expiration-date" required>
+
+    <input type="submit" value="Add Library Card">
+</form>
+
+{{!-- Update existing library card form --}}
+<h2>Update Library Card</h2>
+<p>Select a library card to update and then modify the desired fields:</p>
+<form id="update-library-card-form" method="POST" action="/update-libraryCard/">
+
+    <label for="card-id-dropdown">Select Card ID to Update: </label>
+    <select name="card-id-update" id="card-id-dropdown" required>
+        {{#each data}}
+            <option value="{{this.cardID}}">{{this.cardID}} - {{this.name}}</option>
+        {{/each}}
+    </select>
+
+    <label for="update-address">Address: </label>
+    <input type="text" name="update-address" id="update-address">
+
+    <label for="update-contact">Contact Information: </label>
+    <input type="text" name="update-contact" id="update-contact">
+    
+    <label for="update-expiration-date">Expiration Date: </label>
+    <input type="date" name="update-expiration-date" id="update-expiration-date">
+
+    <input type="submit" value="Update Library Card">
+</form>

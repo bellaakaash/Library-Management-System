@@ -1,0 +1,117 @@
+<!-- 
+    Filename: books.hbs
+    Author: Akaash Bella, Raahi Vaidya
+    Date: August 10, 2023
+    Language: HTML with Handlebars Templating
+    Description:
+        This template renders the book-related content on the web page. It provides an interface
+        for displaying book details such as title, author, date, genre, and description.
+        The template also supports functionalities like deleting books.
+-->
+
+<link rel="stylesheet" href="../css/style.css">
+<h1>Oregon Public Libraries</h1>
+
+{{!-- Navigation Bar --}}
+<nav>
+    <a href="/">Home</a> |
+    <a href="/libraryCards">Library Cards</a> |
+    <a href="/books">Books</a> |
+    <a href="/checkouts">Checkouts</a> |
+    <a href="/fines">Fines</a> |
+    <a href="/cardHasBooks">Library Cards and Books</a>
+</nav>
+
+{{!-- Create a Books table --}}
+<table id="books-table">
+    <thead>
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            <th>Book ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Date</th>
+            <th>Genre</th>
+            <th>Description</th>
+            <th>Delete</th>
+    </thead>
+    <tbody>
+        {{!-- For each row, print the attributes --}}
+        {{#each data}}
+        <tr data-value={{this.bookID}}>
+            <td>{{this.bookID}}</td>
+            <td>{{this.title}}</td>
+            <td>{{this.author}}</td>
+            <td>{{this.date}}</td>
+            <td>{{this.genre}}</td>
+            <td>{{this.description}}</td>
+            <td>
+                <form method="POST" action="/delete-book" class="delete-library-card-form">
+                    <input type="hidden" name="book-id" value="{{this.bookID}}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{!-- Search books by genre form --}}
+<h2>Search Books by Genre</h2>
+<form id="search-book-form" method="GET" action="/search-book">
+    <label for="search-genre">Genre: </label>
+    <input type="text" name="search-genre" id="search-genre" required>
+    <input type="submit" value="Search">
+    <button type="button" id="redirect-button">Reset</button>
+</form>
+
+{{!-- Redirect script for "Reset" button --}}
+<script>
+    const redirectButton = document.getElementById('redirect-button');
+    redirectButton.addEventListener('click', function() {
+        window.location.href = '/books';
+    });
+</script>
+
+{{!-- Add new book form --}}
+<h2>Add New Book</h2>
+<form id="add-book-form" method="POST" action="/add-book">
+    <label for="input-book-id">Book ID: </label>
+    <input type="text" name="input-book-id" id="input-book-id" required>
+
+    <label for="input-title">Title: </label>
+    <input type="text" name="input-title" id="input-title" required>
+
+    <label for="input-author">Author: </label>
+    <input type="text" name="input-author" id="input-author" required>
+
+    <label for="input-date">Publication Date: </label>
+    <input type="date" name="input-date" id="input-date" required>
+
+    <label for="input-genre">Genre: </label>
+    <input type="text" name="input-genre" id="input-genre">
+
+    <label for="input-description">Description: </label>
+    <textarea name="input-description" id="input-description"></textarea>
+
+    <input type="submit" value="Add Book">
+</form>
+
+{{!-- Update existing book form --}}
+<h2>Update Book</h2>
+<p>Select a book to update and then modify the desired fields:</p>
+<form id="update-book-form" method="POST" action="/update-book">
+
+    <label for="book-id-dropdown">Select Book to Update: </label>
+    <select name="book-id-update" id="book-id-dropdown" required>
+        {{#each data}}
+            <option value="{{this.bookID}}">{{this.bookID}} - {{this.title}}</option>
+        {{/each}}
+    </select>
+
+    <label for="update-description">Description: </label>
+    <textarea name="update-description" id="update-description" required></textarea>
+
+    <input type="submit" value="Update Book">
+</form>

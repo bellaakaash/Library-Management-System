@@ -1,0 +1,71 @@
+<!-- 
+    Filename: index.hbs
+    Author: Akaash Bella, Raahi Vaidya
+    Date: August 10, 2023
+    Language: HTML with Handlebars Templating
+    Description:
+        This template renders the homepage of the Library Management System. It provides a welcoming
+        interface and navigation links to various sections of the system, such as library cards, books,
+        checkouts, fines, and associations between library cards and books.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css">
+    <title>Library Management System</title>
+    
+</head>
+<body>
+    {{!-- Container for welcome message and navigation --}}
+    <div class="container">
+        <h1>Welcome to the Library Management System</h1>
+        <nav>
+            <a href="/">Home</a> |
+            <a href="/libraryCards">Library Cards</a> |
+            <a href="/books">Books</a> |
+            <a href="/checkouts">Checkouts</a> |
+            <a href="/fines">Fines</a> |
+            <a href="/cardHasBooks">Library Cards and Books</a>
+        </nav>
+    </div>
+    
+    {{!-- Project Overview and Details --}}
+    <div>
+        <fieldset>
+            <legend><h3>Project Overview</h3></legend>
+
+            {{!-- Overview Description --}}
+            <p>The Oregon City Public Library serves a monthly customer base of around 3,000 individuals/library card
+                holders who rent and check out books. These library cardholders contribute to a monthly book rental
+                count of approximately 1,700. The current situation poses a challenge due to the considerable volume of
+                customers and book rentals that exceeds the library's capacity to effectively manage and monitor. To
+                address this issue, there is a pressing need for a proficient database system capable of efficiently
+                handling and overseeing library operations. BookDB is a platform that serves as a vast digital library
+                managed by an administrator for The Oregon City Public Library. The database-driven website will record
+                books, library members, library card, book checkout/return dates, and fines.
+            </p>
+
+            {{!-- List of Entities --}}
+            <h3>Entities</h3>
+            <ul>
+                <li>Library Cards - Records the membership details of library members including name, address, contact information, and when their library card was issued and expires</li>
+                <li>Books - Record of all books, includes author, genre, publish date, and a description</li>
+                <li>Fines - Records the fines imposed on members, when the fine is due, and payment status of the fine</li>
+                <li>Checkouts - Records the dates when a book was checked out, is due for return, and was actually returned by a member, is a running history of all checkouts</li>
+                <li>Card has Book - Intersection table track books and the current person they are assosciated with</li>
+            </ul>
+
+            {{!-- Entity Relationship Diagram --}}
+            <h3>Entity Relationship Diagram</h3>
+            <img src="imgs/ERD.png" alt="Entity Relationship Diagram" width="500">
+
+            {{!-- Schema Diagram --}}
+            <h3>Schema Diagram</h3>
+            <img src="imgs/Schema.png" alt="Schema Diagram" height="600">
+        </fieldset>   
+    </div>
+</body>
+</html>
